@@ -170,14 +170,15 @@ public class ExampleRescoreBuilder extends RescorerBuilder<ExampleRescoreBuilder
                  * them in (reader, field, docId) order because that is the
                  * order they are on disk.
                  */
-                ScoreDoc[] sortedByDocId = new ScoreDoc[topDocs.scoreDocs.length]; 
+                ScoreDoc[] sortedByDocId = new ScoreDoc[topDocs.scoreDocs.length];
                 System.arraycopy(topDocs.scoreDocs, 0, sortedByDocId, 0, topDocs.scoreDocs.length);
                 Arrays.sort(sortedByDocId, (a, b) -> a.doc - b.doc); // Safe because doc ids >= 0
                 Iterator<LeafReaderContext> leaves = searcher.getIndexReader().leaves().iterator();
                 LeafReaderContext leaf = null;
                 SortedNumericDoubleValues data = null;
                 int endDoc = 0;
-                for (int i = 0; i < end; i++) {
+                for (int j = 0; j < end; j++) {
+                    int i = sortedByDocId[j];
                     if (topDocs.scoreDocs[i].doc >= endDoc) {
                         do {
                             leaf = leaves.next();
